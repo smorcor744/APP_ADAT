@@ -16,8 +16,10 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@RequestMapping("/usuarios")
 @RestController
 class UsuarioController {
 
@@ -34,9 +36,14 @@ class UsuarioController {
         @RequestBody usuarioRegisterDTO: UsuarioRegisterDTO
     ) : ResponseEntity<UsuarioDTO>?{
 
-        // TODO: Implementar este metodo
 
-        return ResponseEntity(null, HttpStatus.CREATED)
+        val newUsuario = usuarioService.insertUser(usuarioRegisterDTO)
+
+        return if(newUsuario != null){
+            ResponseEntity<UsuarioDTO>(newUsuario, HttpStatus.CREATED)
+        } else ResponseEntity<UsuarioDTO>(null, HttpStatus.INTERNAL_SERVER_ERROR)
+
+
 
     }
 
